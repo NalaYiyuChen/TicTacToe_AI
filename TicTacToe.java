@@ -7,6 +7,7 @@ public class TicTacToe {
     private int currPlayer = 0;
     private char winningPlayer;
 
+    /** Init instance of TicTacToe. */
     public TicTacToe() {
         for (int i = 0; i < 3; i ++) {
             for (int j = 0; j < 3; j++) {
@@ -15,10 +16,12 @@ public class TicTacToe {
         }
     }
 
+    /** Init instance of TicTacToe with a certain board position. */
     public TicTacToe(char[][] board) {
         TicTacToeBoard = board;
     }
 
+    /** Returns the character representing the current player. Use to place marker. */
     public char getCurrPlayer() {
         if (currPlayer == 0) {
             return 'X';
@@ -27,14 +30,17 @@ public class TicTacToe {
         }
     }
 
+    /** Returns the winning player. Returns null if tie or unfinished game. */
     public char getWinningPlayer() {
         return winningPlayer;
     }
 
+    /** Changes player between turns. */
     public void takeTurns() {
         currPlayer = (currPlayer + 1) % 2;
     }
 
+    /** Prints out the board during gameplay. */
     public void displayBoard() {
         for (int i = 0; i < 3; i++) {
             for (int k = 0; k < 13; k++) {
@@ -55,6 +61,7 @@ public class TicTacToe {
         System.out.println();
     }
 
+    /** Returns whether there are empty spaces left on the board. */
     public boolean moveAvailable() {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
@@ -66,10 +73,12 @@ public class TicTacToe {
         return false;
     }
 
+    /** Returns whether someone has won the game. */
     public boolean winner() {
         return inARow() || inACol() || inADiag();
     }
 
+    /** Returns whether there are three markers by the same player in a row. */
     public boolean inARow() {
         for (int i = 0; i < 3; i++) {
             char c1 = TicTacToeBoard[i][0];
@@ -82,6 +91,7 @@ public class TicTacToe {
         return false;
     }
 
+    /** Returns whether there are three markers by the same player in a column. */
     public boolean inACol() {
         for (int i = 0; i < 3; i++) {
             char c1 = TicTacToeBoard[0][i];
@@ -94,6 +104,7 @@ public class TicTacToe {
         return false;
     }
 
+    /** Returns whether there are three markers by the same player in a diagonal. */
     public boolean inADiag() {
         char upperLeft = TicTacToeBoard[0][0];
         char lowerLeft = TicTacToeBoard[2][0];
@@ -103,6 +114,7 @@ public class TicTacToe {
         return (checkBoxes(upperLeft, mid, lowerRight)) || (checkBoxes(lowerLeft, mid, upperRight));
     }
 
+    /** Returns whether the three boxes given contain the same marker. */
     public boolean checkBoxes(char c1, char c2, char c3) {
         if ((c1 != ' ') && (c1 == c2) && (c2 == c3)) {
             winningPlayer = c1;
@@ -111,6 +123,8 @@ public class TicTacToe {
         return false;
     }
 
+    /** Attempts to place a marker of the current player on the given row and column.
+     * Returns true if marker is successfully placed. */
     public boolean move(int row, int col) {
         if ((row < 0) || (row > 2) || (col < 0) || (col > 2)) {
             return false;
@@ -122,6 +136,7 @@ public class TicTacToe {
         return true;
     }
 
+    /** Returns an Arraylist of arrays of available indices to move to. */
     public ArrayList<int[]> availableMoves() {
         ArrayList moves = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
@@ -162,6 +177,7 @@ public class TicTacToe {
         return returnMove;
     }
 
+    /** Returns how favorable the board is to the player passed in. */
     public int boardValue(int playerToMove) {
         if (winner()) {
             if (playerToMove == winningPlayer) {
@@ -174,6 +190,9 @@ public class TicTacToe {
         }
     }
 
+    /** Recursively find the best value achievable for the player to move,
+     * given a node containing the current position of the board.
+     * Returns the most favorable move. */
     public int minimax(Node node, int depth, int playerToMove) {
         if (!node.currBoard.moveAvailable()) {
             return node.currBoard.boardValue(playerToMove);

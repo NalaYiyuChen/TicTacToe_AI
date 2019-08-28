@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Game {
     TicTacToe newBoard = new TicTacToe();
 
+    /** Init an instance of a Game. Players take turn until the end of the game. */
     public Game() {
         Scanner scan = new Scanner(System.in);
         System.out.println("New Game!");
